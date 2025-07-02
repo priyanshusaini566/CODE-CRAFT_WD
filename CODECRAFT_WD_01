@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task 1 - Navigation Menu</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #232f3e;
+      color: white;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #232f3e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+      z-index: 1000;
+    }
+
+    nav.scrolled {
+      background-color: #1d78dfad;
+    }
+
+    .search-container {
+      position: relative;
+      width: 90%;
+      max-width: 1200px;
+      margin-bottom: 10px;
+    }
+
+    .search-container input[type="text"] {
+      width: 100%;
+      height: 40px;
+      font-size: 20px;
+      border-radius: 8px;
+      border: 2px solid rgba(36, 218, 231, 0.767);
+      padding: 5px 15px 5px 45px; /* left space for icon */
+      transition: background-color 0.3s;
+      background-color: white;
+      color: black;
+    }
+
+    .search-container input[type="text"]:hover {
+      background-color: aqua;
+    }
+
+    .search-container svg {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      fill: gray;
+    }
+
+    ::placeholder {
+      color: black;
+      font-weight: bold;
+    }
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 0;
+    }
+
+    ul li {
+      list-style: none;
+      border: 3px solid rgba(36, 218, 231, 0.767);
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: transparent;
+      transition: all 0.3s ease;
+    }
+
+    ul li:hover {
+      background-color: aqua;
+      color: #000;
+      border-color: white;
+    }
+
+    .content {
+      margin-top: 150px;
+      padding: 30px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav id="navbar">
+      <div class="search-container">
+        <!-- SVG Magnifying Glass Icon -->
+        <svg viewBox="0 0 24 24">
+          <path d="M10,2A8,8 0 0,1 18,10C18,12.21 17.16,14.21 15.77,15.63L21.71,21.56L20.29,22.98L14.36,17.05C12.94,18.44 10.94,19.28 8.73,19.28A8,8 0 1,1 10,2M10,4A6,6 0 1,0 16,10A6,6 0 0,0 10,4Z" />
+        </svg>
+        <input type="text" id="search" placeholder="Search" autofocus />
+      </div>
+
+      <ul>
+        <li><strong>Home</strong></li>
+        <li><strong>Services</strong></li>
+        <li><strong>Wishlist</strong></li>
+        <li><strong>About us</strong></li>
+        <li><strong>Contact</strong></li>
+        <li><strong>Dashboard</strong></li>
+        <li><strong>Trending</strong></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="content">
+    <h1>Welcome to CODE CRAFT</h1>
+    <p>Scroll down to see the navbar change color.</p>
+    <p>(Add more dummy text here for scroll)</p>
+    <p style="margin-top: 1500px;">End of content.</p>
+  </div>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+
+</body>
+
+</html>
