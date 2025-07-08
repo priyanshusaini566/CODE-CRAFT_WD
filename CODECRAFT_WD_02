@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stopwatch</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;900&display=swap');
+    * {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f7e1ff;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgb(46, 2, 56);
+      border-radius: 25px;
+      padding: 30px 40px;
+      color: white;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .box1 {
+      font-size: 2rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .time-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 5px;
+    }
+
+    .time-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .time-box .value {
+      font-size: 3rem;
+      font-weight: 900;
+    }
+
+    .time-box .label {
+      margin-top: 5px;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .box3 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 25px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 25px;
+      background-color: rgba(241, 106, 241, 0.87);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: rgba(247, 169, 236, 0.973);
+      border: 2px solid white;
+    }
+
+    #laps {
+      margin-top: 20px;
+      list-style: none;
+      padding: 0;
+    }
+
+    @media (max-width: 480px) {
+      .time-box .value {
+        font-size: 2.2rem;
+      }
+
+      .time-box .label {
+        font-size: 0.9rem;
+      }
+
+      button {
+        width: 45%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box1">Stopwatch</div>
+
+    <!-- Time display split into columns -->
+    <div class="time-container">
+      <div class="time-box">
+        <div class="value" id="hour">00</div>
+        <div class="label">Hour</div>
+      </div>
+      <div class="time-box">
+        <div class="value" id="minute">00</div>
+        <div class="label">Minute</div>
+      </div>
+      <div class="time-box">
+        <div class="value" id="second">00</div>
+        <div class="label">Second</div>
+      </div>
+    </div>
+
+    <div class="box3">
+      <button onclick="startTimer()">Start</button>
+      <button onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Reset</button>
+      <button onclick="lapTime()">Lap</button>
+    </div>
+    <ul id="laps"></ul>
+  </div>
+
+  <script>
+    let seconds = 0;
+    let minutes = 0;
+    let hours = 0;
+    let timer = null;
+    let isRunning = false;
+
+    function updateDisplay() {
+      document.getElementById("hour").textContent = String(hours).padStart(2, '0');
+      document.getElementById("minute").textContent = String(minutes).padStart(2, '0');
+      document.getElementById("second").textContent = String(seconds).padStart(2, '0');
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+      timer = setInterval(() => {
+        seconds++;
+        if (seconds === 60) {
+          seconds = 0;
+          minutes++;
+        }
+        if (minutes === 60) {
+          minutes = 0;
+          hours++;
+        }
+        updateDisplay();
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      isRunning = false;
+      clearInterval(timer);
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      seconds = 0;
+      minutes = 0;
+      hours = 0;
+      updateDisplay();
+      document.getElementById("laps").innerHTML = "";
+    }
+
+    function lapTime() {
+      const laps = document.getElementById("laps");
+      const li = document.createElement("li");
+      li.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      laps.appendChild(li);
+    }
+
+    updateDisplay(); // Initial display
+  </script>
+</body>
+</html>
+
