@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3 - Tic Tac Toe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background-color: rgba(128, 128, 128, 0.712);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2rem;
+            color: black;
+        }
+
+        .info {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background-color: whitesmoke;
+            border-radius: 20px;
+            padding: 10px;
+            max-width: 300px;
+            width: 80vw;
+            aspect-ratio: 1 / 1;
+        }
+
+        .items {
+            background-color: black;
+            color: white;
+            font-size: 2.5rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .items:hover {
+            transform: scale(1.05);
+        }
+
+        button {
+            margin: 15px 5px 5px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: 3px solid black;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .mode-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                gap: 5px;
+            }
+
+            .items {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>TIC TAC TOE</h1>
+
+    <div class="mode-buttons">
+        <button onclick="setMode('2P')">2 Player</button>
+        <button onclick="setMode('AI')">Play vs AI</button>
+    </div>
+
+    <div class="info" id="info">Choose a mode to start</div>
+
+    <div class="container" id="board">
+        <div class="items"></div>
+        <div class="items"></div>
+        <div class="items"></div>
+        <div class="items"></div>
+        <div class="items"></div>
+        <div class="items"></div>
+        <div class="items"></div>
+        <div class="items"></div>
+        <div class="items"></div>
+    </div>
+
+    <button onclick="resetBoard()">Reset</button>
+
+    <script>
+        const cells = document.querySelectorAll('.items');
+        const info = document.getElementById('info');
+        let currentPlayer = "X";
+        let mode = ""; // "2P" or "AI"
+        let gameOver = false;
+
+        function setMode(selectedMode) {
+            mode = selectedMode;
+            resetBoard();
+            info.textContent = `Mode: ${mode === 'AI' ? 'Player vs AI' : '2 Player'} — Turn: ${currentPlayer}`;
+        }
+
+        function checkWinner() {
+            const wins = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            for (let combo of wins) {
+                const [a, b, c] = combo;
+                if (
+                    cells[a].textContent &&
+                    cells[a].textContent === cells[b].textContent &&
+                    cells[a].textContent === cells[c].textContent
+                ) {
+                    info.textContent = `${cells[a].textContent} wins!`;
+                    gameOver = true;
+                    return;
+                }
+            }
+
+            if ([...cells].every(cell => cell.textContent !== "")) {
+                info.textContent = "It's a draw!";
+                gameOver = true;
+            }
+        }
+
+        function aiMove() {
+            if (gameOver) return;
+            const emptyCells = [...cells].filter(cell => cell.textContent === "");
+            if (emptyCells.length === 0) return;
+            const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            randomCell.textContent = currentPlayer;
+            checkWinner();
+            if (!gameOver) {
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+                info.textContent = `Turn: ${currentPlayer}`;
+            }
+        }
+
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                if (cell.textContent !== "" || gameOver || !mode) return;
+
+                cell.textContent = currentPlayer;
+                checkWinner();
+
+                if (gameOver) return;
+
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+                info.textContent = `Turn: ${currentPlayer}`;
+
+                if (mode === "AI" && currentPlayer === "O") {
+                    setTimeout(aiMove, 400); // Delay for realism
+                }
+            });
+        });
+
+        function resetBoard() {
+            cells.forEach(cell => cell.textContent = "");
+            currentPlayer = "X";
+            gameOver = false;
+            info.textContent = mode ? `Mode: ${mode === 'AI' ? 'Player vs AI' : '2 Player'} — Turn: ${currentPlayer}` : "Choose a mode to start";
+        }
+    </script>
+</body>
+
+</html>
