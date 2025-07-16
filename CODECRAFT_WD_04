@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Priyanshu Saini | Web Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      background-color: #E8F0FE;
+      color: #333;
+    }
+
+    header {
+      background: #0a192f;
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 18px;
+    }
+
+    nav {
+      background: #14213d;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    section {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .about img {
+      max-width: 300px;
+      border-radius: 10px;
+    }
+
+    .about div {
+      flex: 1;
+    }
+
+    .projects, .contact {
+      background: #E0FFFF ;
+      border-radius: 10px;
+      margin-top: 20px;
+      padding: 20px;
+    }
+
+    footer {
+      background: #0a192f;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    @media (max-width: 768px) {
+      .about {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+    ul{
+        margin: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Priyanshu Saini</h1>
+    <p>Web Developer | HTML • CSS • JavaScript</p>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About Me</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="home">
+    <h2>Welcome to My Portfolio</h2>
+    <p>Hello! I'm Priyanshu Saini, a passionate web developer with a strong foundation in HTML, CSS, and JavaScript. I enjoy building modern, responsive websites and exploring creative web solutions. When I'm not coding, I love playing musical instruments and listening to music.</p>
+  </section>
+
+  <section id="about" class="about">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSithMk-HHrbagTNN1Jmp6PBuUYI3mhrlISHc9XliDTd9OIxvEdyOLnEqc&s" alt="Priyanshu Saini">
+    <div>
+      <h2>About Me</h2>
+      <p>I am currently pursuing B.Tech in Computer Science Engineering from Arya College of Engineering, Kukas (Jaipur). I am skilled in front-end development with hands-on experience in HTML, CSS, and JavaScript.</p>
+      <p>My interests go beyond the screen—I'm deeply passionate about music and love playing musical instruments.</p>
+    </div>
+  </section>
+
+  <section id="projects" class="projects">
+    <h2>Projects</h2>
+    <ul type="disc">
+      <li> Spotify Clone (HTML/CSS)</li>
+      <li> Responsive Portfolio Website</li>
+      <li>Tic-Tac-Toe Game using JavaScript</li>
+    </ul>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact</h2>
+    <p>📧 Email: ps56646i4@gmail.com</p>
+    <p>🌐 LinkedIn: <a href="https://www.linkedin.com/in/priyanshu-saini-3a2798326/" target="_blank">Priyanshu saini|LinkedIn</a></p>
+    <p>📍 Location: Jaipur, India</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Priyanshu Saini | Web Developer</p>
+  </footer>
+
+</body>
+</html>
