@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tropical Weather App</title>
+  <link rel="shortcut icon" href="weather.jpg" type="image/x-icon">
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+      *{
+        font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+      }
+    :root {
+      --primary: #FF6F61;
+      --background: #FFF5E1;
+      --text: #333333;
+      --accent: #FDB813;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+
+    input, button {
+      padding: 12px 16px;
+      font-size: 16px;
+      margin: 8px 4px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--accent);
+    }
+
+    .loader {
+      display: none;
+      margin: 20px auto;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .weather, .forecast {
+      background: white;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .forecast-grid {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-top: 10px;
+      padding-bottom: 10px;
+      justify-content: center;
+    }
+
+    .forecast-item {
+      flex: 0 0 auto;
+      background: #fff9ec;
+      padding: 10px;
+      border-radius: 12px;
+      min-width: 110px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .forecast-item img {
+      width: 40px;
+      height: 40px;
+    }
+
+    @media (max-width: 600px) {
+      input {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      button {
+        width: 48%;
+        margin: 5px 1%;
+      }
+
+      .forecast-grid {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tropical Weather App</h1>
+
+  <input type="text" id="cityInput" placeholder="Enter city" />
+  <button onclick="getWeatherByCity()">Search</button>
+  <button onclick="getWeatherByLocation()">Use My Location</button>
+
+  <div class="loader" id="loader"></div>
+
+  <div id="weatherData" class="weather"></div>
+  <div id="forecastData" class="forecast"></div>
+
+  <script>
+    const apiKey = "74f51067349f2abaab5c0d4dd5a58b51";
+
+    const loader = document.getElementById("loader");
+    const weatherDiv = document.getElementById("weatherData");
+    const forecastDiv = document.getElementById("forecastData");
+
+    function showLoader() {
+      loader.style.display = "block";
+      weatherDiv.innerHTML = "";
+      forecastDiv.innerHTML = "";
+    }
+
+    function hideLoader() {
+      loader.style.display = "none";
+    }
+
+    function displayWeather(data) {
+      const icon = data.weather[0].icon;
+      const html = `
+        <h2>${data.name || "Your Location"}, ${data.sys?.country || ""}</h2>
+        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="Weather Icon">
+        <p><strong>Temp:</strong> ${data.main.temp.toFixed(1)}°C</p>
+        <p><strong>Condition:</strong> ${data.weather[0].description}</p>
+        <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+        <p><strong>Wind:</strong> ${data.wind.speed} m/s</p>
+      `;
+      weatherDiv.innerHTML = html;
+    }
+
+    function displayForecast(data) {
+      const list = data.list.filter(item => item.dt_txt.includes("12:00:00"));
+      let html = `<h3>5-Day Forecast</h3><div class="forecast-grid">`;
+      list.forEach(day => {
+        html += `
+          <div class="forecast-item">
+            <p><strong>${new Date(day.dt_txt).toLocaleDateString()}</strong></p>
+            <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png" alt="Icon">
+            <p>${day.main.temp.toFixed(1)}°C</p>
+            <p>${day.weather[0].main}</p>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      forecastDiv.innerHTML = html;
+    }
+
+    function getWeatherByCity() {
+      const city = document.getElementById("cityInput").value;
+      if (!city) return alert("Please enter a city name.");
+      showLoader();
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.cod !== 200) {
+            alert(data.message || "City not found");
+            hideLoader();
+            return;
+          }
+          displayWeather(data);
+          return fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.cod !== "200") return;
+          displayForecast(data);
+          hideLoader();
+        })
+        .catch(() => {
+          alert("Error fetching weather data.");
+          hideLoader();
+        });
+    }
+
+    function getWeatherByLocation() {
+      if (navigator.geolocation) {
+        showLoader();
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+
+          fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+            .then(res => res.json())
+            .then(data => {
+              displayWeather(data);
+              return fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`);
+            })
+            .then(res => res.json())
+            .then(data => {
+              displayForecast(data);
+              hideLoader();
+            })
+            .catch(() => {
+              alert("Error fetching location data.");
+              hideLoader();
+            });
+        });
+      } else {
+        alert("Geolocation not supported.");
+      }
+    }
+  </script>
+</body>
+</html>
+
